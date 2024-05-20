@@ -34,4 +34,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return null;
     }
+
+    public int getUserCarrer(String email) throws UsernameNotFoundException{
+        User userData = userRepository.findByEmail(email);
+        return userData.getCareer();
+
+    }
+
+    public void updateUserCareer(String email , int career) throws UsernameNotFoundException{
+        User userData = userRepository.findByEmail(email);
+        userData.setCareer(career);
+        userRepository.save(userData);
+    }
 }

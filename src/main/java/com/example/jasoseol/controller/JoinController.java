@@ -1,24 +1,19 @@
 package com.example.jasoseol.controller;
 
 
+import com.example.jasoseol.domain.User;
 import com.example.jasoseol.dto.AddUserRequest;
+import com.example.jasoseol.service.CustomUserDetailsService;
 import com.example.jasoseol.service.JoinService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class JoinController {
 
     private final JoinService joinService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-//    @Autowired
-//    private final UserRepository userRepository;
+    private final CustomUserDetailsService userService;
 
     static class MessageResponse {
         private String message;
@@ -27,16 +22,15 @@ public class JoinController {
             this.message = message;
         }
 
-        // Getter
         public String getMessage() {
             return message;
         }
     }
 
-    public JoinController(JoinService joinService) {
+    public JoinController(JoinService joinService, CustomUserDetailsService userService) {
 
         this.joinService = joinService;
-
+        this.userService = userService;
     }
 
     @PostMapping("/api/join")
@@ -44,14 +38,6 @@ public class JoinController {
         boolean joinSuccess = joinService.joinProcess(joinDTO);
 
         if(joinSuccess){ // 자동 로그인
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            joinDTO.getEmail(),
-                            joinDTO.getPassword()
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
             return ResponseEntity.ok(new MessageResponse("Join Success"));
         }
         else{
@@ -69,11 +55,23 @@ public class JoinController {
                 new MessageResponse("Email does not exist");
 
         return ResponseEntity.ok(response);
-//        if(exists){
-//            return "Email exists";
-//        }
-//        return "Email does not exist";
     }
+
+    @GetMapping("/api/check-career")
+    public ResponseEntity<?> checkCareer(@RequestParam String email) throws Exception {
+        int carrer = userService.getUserCarrer(email);
+        MessageResponse response = new MessageResponse(Integer.toString(carrer));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/api/change-career")
+    public ResponseEntity<?> changeCarrer(@RequestParam String email, int career) throws Exception{
+        userService.updateUserCareer(email, career);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 
 
 }

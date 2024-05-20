@@ -1,10 +1,7 @@
 package com.example.jasoseol.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,38 +19,39 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "user_id", updatable = false)
     private Long id;
 
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password",  nullable = false)
+    @Column(name = "PASSWORD",  nullable = false)
     private String password;
 
-    @Column(name = "nickname")
+    @Column(name = "NICKNAME")
     private String nickname;
 
-    @Column(name = "marketing", nullable = false)
+    @Column(name = "MARKETING", nullable = false)
     private int marketing;
 
-    @Column(name = "career")
+    @Setter
+    @Column(name = "CAREER")
     private int career;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "CREATED_AT", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime created_at;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "UPDATED_AT", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updated_at = LocalDateTime.now();
 
-    @Column(name="deleted_at", nullable = true)
+    @Column(name="DELETED_AT", nullable = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deleted_at;
 
-    @Column(name="role")
+    @Column(name="ROLE")
     private String role;
 
     @Builder
@@ -93,6 +91,8 @@ public class User implements UserDetails {
         return password;
     }
 
+//    public int getCarrer(){ return career; }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -112,4 +112,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
