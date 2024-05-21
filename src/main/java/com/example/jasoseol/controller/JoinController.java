@@ -2,6 +2,7 @@ package com.example.jasoseol.controller;
 
 
 import com.example.jasoseol.domain.User;
+import com.example.jasoseol.dto.AddCompanyUserRequest;
 import com.example.jasoseol.dto.AddUserRequest;
 import com.example.jasoseol.service.CustomUserDetailsService;
 import com.example.jasoseol.service.JoinService;
@@ -71,7 +72,18 @@ public class JoinController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("/api/join/CompanyUser")
+    public ResponseEntity<?> joinProcess(@RequestBody AddCompanyUserRequest joinDTO) {
+        boolean joinSuccess = joinService.joinProcess(joinDTO);
 
+        if(joinSuccess){ // 자동 로그인
+            return ResponseEntity.ok(new MessageResponse("Join Success"));
+        }
+        else{
+            return ResponseEntity.ok("Join Fail");
+        }
+
+    }
 
 
 }

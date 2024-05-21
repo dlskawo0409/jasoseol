@@ -15,19 +15,21 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class User implements UserDetails {
+@Inheritance(strategy = InheritanceType.JOINED) // 조인 전략
+@DiscriminatorColumn
+public class User extends BasicEntity implements UserDetails  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", updatable = false)
     private Long id;
 
-
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
     @Column(name = "PASSWORD",  nullable = false)
     private String password;
+
 
     @Column(name = "NICKNAME")
     private String nickname;
@@ -39,17 +41,6 @@ public class User implements UserDetails {
     @Column(name = "CAREER")
     private int career;
 
-    @Column(name = "CREATED_AT", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime created_at;
-
-    @Column(name = "UPDATED_AT", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime updated_at = LocalDateTime.now();
-
-    @Column(name="DELETED_AT", nullable = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime deleted_at;
 
     @Column(name="ROLE")
     private String role;
@@ -61,9 +52,6 @@ public class User implements UserDetails {
         this.nickname = nickname;
         this.marketing = marketing;
         this.career = career;
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
-        this.deleted_at = null;
         this.role = role;
 
     }
@@ -90,8 +78,6 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
-
-//    public int getCarrer(){ return career; }
 
     @Override
     public boolean isAccountNonExpired() {
