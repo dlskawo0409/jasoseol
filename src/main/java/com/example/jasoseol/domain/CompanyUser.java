@@ -1,29 +1,27 @@
 package com.example.jasoseol.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.Builder;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Builder
+@NoArgsConstructor
 @Entity
-public class CompanyUser extends User{
+@DiscriminatorValue("COMPANY_USER")
+public class CompanyUser extends User {
 
     @Column(name = "COMPANY_NUM")
-    private String company_num;
+    private String companyNum;
 
     @Column(name = "COMPANY_USER_NAME")
-    private String company_user_name;
+    private String companyUserName;
 
     @Column(name = "COMPANY_USER_PHONENUM")
-    private String company_user_phonenum;
+    private String companyUserPhonenum;
 
-    @Builder
-    CompanyUser(String email, String password, String nickname, int marketing, int career, String role, String company_num ){
+    @Builder(builderMethodName = "companyUserBuilder")
+    public CompanyUser(String email, String password, String nickname, int marketing, int career, String role, String companyNum, String companyUserName, String companyUserPhonenum) {
         super(email, password, nickname, marketing, career, role);
-        this.company_num = company_num;
-
-
+        this.companyNum = companyNum;
+        this.companyUserName = companyUserName;
+        this.companyUserPhonenum = companyUserPhonenum;
     }
-
-
 }

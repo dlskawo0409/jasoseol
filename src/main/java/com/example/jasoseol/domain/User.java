@@ -2,6 +2,7 @@ package com.example.jasoseol.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,12 +17,12 @@ import java.util.List;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // 조인 전략
-@DiscriminatorColumn
+@DiscriminatorColumn(name = "DTYPE") // DTYPE 열을 사용하여 구분
 public class User extends BasicEntity implements UserDetails  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", updatable = false)
+    @Column(name = "USER_ID", updatable = false)
     private Long id;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
@@ -45,6 +46,7 @@ public class User extends BasicEntity implements UserDetails  {
     @Column(name="ROLE")
     private String role;
 
+
     @Builder
     public User(String email, String password, String nickname, int marketing, int career, String role) {
         this.email = email;
@@ -55,13 +57,13 @@ public class User extends BasicEntity implements UserDetails  {
         this.role = role;
 
     }
-    @Builder
-    public User(String email, String password, int marketing){
-        this.email = email;
-        this.password = password;
-        this.nickname = "아무개";
-        this.marketing = marketing;
-    }
+//    @Builder
+//    public User(String email, String password, int marketing){
+//        this.email = email;
+//        this.password = password;
+//        this.nickname = "아무개";
+//        this.marketing = marketing;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

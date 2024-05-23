@@ -72,7 +72,7 @@ public class JoinController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/api/join/CompanyUser")
+    @PostMapping("/api/join/company-user")
     public ResponseEntity<?> joinProcess(@RequestBody AddCompanyUserRequest joinDTO) {
         boolean joinSuccess = joinService.joinProcess(joinDTO);
 

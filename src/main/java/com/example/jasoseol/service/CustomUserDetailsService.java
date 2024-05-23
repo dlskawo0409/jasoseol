@@ -16,15 +16,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public CustomUserDetailsService(UserRepository userRepository) {
-
         this.userRepository = userRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String eamil) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         //DB에서 조회
-        User userData = userRepository.findByEmail(eamil);
+        User userData = userRepository.findByEmail(email);
 
         if (userData != null) {
 
@@ -32,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new CustomUserDetails(userData);
         }
 
-        return null;
+        throw new UsernameNotFoundException("User not found with email: " + email);
     }
 
     public int getUserCarrer(String email) throws UsernameNotFoundException{

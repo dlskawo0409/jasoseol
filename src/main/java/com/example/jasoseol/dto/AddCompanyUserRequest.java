@@ -1,30 +1,15 @@
 package com.example.jasoseol.dto;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-public class AddCompanyUserRequest extends AddUserRequest{
-
-    private String company_num;
-    private String company_user_name;
-    private String company_user_phonenum;
-
-    public AddCompanyUserRequest(){
-    }
-
-    public String getNickname() {
-        return super.getNickname();
-    }
-
-    public String getCompanyNum() {
-        return this.company_num;
-    }
-
-    public String getCompanyUserPhonenum() {
-        return this.company_user_phonenum;
-    }
-
-    public String getCompanyUserName() {
-        return this.company_user_name;
-    }
+@Data
+public class AddCompanyUserRequest {
+    private String email;
+    private String password;
+    private String nickname;
+    private int marketing;
+    private int career;
+    private String companyNum;
+    private String companyUserName;
+    private String companyUserPhonenum;
 }

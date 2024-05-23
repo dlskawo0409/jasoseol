@@ -22,6 +22,12 @@ public class JoinService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+//    public JoinService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder ) {
+//        this.userRepository = userRepository;
+//
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//    }
+
     public boolean joinProcess(AddUserRequest joinDTO) {
 
         String email = joinDTO.getEmail();
@@ -34,21 +40,45 @@ public class JoinService {
             return false;
         }
 
-//        AddUserRequest data = new AddUserRequest();
+        AddUserRequest data = new AddUserRequest();
 
         userRepository.save(User.builder()
                 .email(email)
                 .password(bCryptPasswordEncoder.encode(password))
                 .nickname("아무개")
                 .marketing(joinDTO.getMarketing())
-//                .created_at()
-//                .updated_at(joinDTO.getUpdated_at())
-//                .deleted_at(joinDTO.getDeleted_at())
-
+                .role("NORMAL")
                 .build());
 
         return true;
     }
+
+//    public boolean joinProcess(AddCompanyUserRequest joinDTO){
+//        String email = joinDTO.getEmail();
+//        String password = joinDTO.getPassword();
+//        String nickName = joinDTO.getNickname();
+//        Boolean isExist = userRepository.existsByEmail(email);
+//
+//        if(isExist){
+//            return false;
+//        }
+//
+//
+//        userRepository.save(User.builder()
+//                .email(email)
+//                .password(bCryptPasswordEncoder.encode(password))
+//                .nickname(nickName)
+//                .marketing(joinDTO.getMarketing())
+//                .build());
+//
+//        companyUserRepository.save(CompanyUser.builder()
+//                        .company_num(joinDTO.getCompanyNum())
+//                        .company_user_name(joinDTO.getCompanyUserName())
+//                        .company_user_phonenum(joinDTO.getCompanyUserPhonenum())
+//                .build());
+//
+//        return true;
+//    }
 
     public boolean joinProcess(AddCompanyUserRequest joinDTO){
         String email = joinDTO.getEmail();
@@ -56,40 +86,27 @@ public class JoinService {
         String nickName = joinDTO.getNickname();
         Boolean isExist = userRepository.existsByEmail(email);
 
-        if(isExist){
+        if (isExist) {
             return false;
         }
 
-//        AddCompanyUserRequest data = new AddCompanyUserRequest();
-
-        userRepository.save(User.builder()
+        // CompanyUser 객체 생성 및 저장
+        CompanyUser companyUser = CompanyUser.companyUserBuilder()
                 .email(email)
                 .password(bCryptPasswordEncoder.encode(password))
                 .nickname(nickName)
                 .marketing(joinDTO.getMarketing())
-                .build());
+                .career(0)
+                .role("NORMAL")
+                .companyNum(joinDTO.getCompanyNum())
+                .companyUserName(joinDTO.getCompanyUserName())
+                .companyUserPhonenum(joinDTO.getCompanyUserPhonenum())
+                .build();
 
-        companyUserRepository.save(CompanyUser.builder()
-                        .company_num(joinDTO.getCompanyNum())
-                        .company_user_name(joinDTO.getCompanyUserName())
-                        .company_user_phonenum(joinDTO.getCompanyUserPhonenum())
-                .build());
-
-
-//        companyUserRepository.save(CompanyUser.builder()
-//                        .email(email)
-//                        .password(bCryptPasswordEncoder.encode(password))
-//                        .nickname(joinDTO.getNickname())
-//                        .marketing(joinDTO.getMarketing())
-//
-//
-//                .build()
-//        );
+        companyUserRepository.save(companyUser);
 
         return true;
     }
-
-
 
     public boolean existsByEmail(String email){
         return userRepository.existsByEmail(email);
