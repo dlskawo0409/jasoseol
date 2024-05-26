@@ -1,13 +1,19 @@
 package com.example.jasoseol.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "company")
 public class Company {
 
@@ -43,6 +49,6 @@ public class Company {
     @Column(name = "ANNUAL_INCOME",nullable = false)
     private long annualIncome;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private final List<Annoucement> annoucements = new ArrayList<>();
 }

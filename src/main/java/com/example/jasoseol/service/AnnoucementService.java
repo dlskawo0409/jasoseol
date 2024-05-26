@@ -25,10 +25,10 @@ public class AnnoucementService {
 //        if(!companyExist){
 //            return false;
 //        }
-        System.out.println(joinDTO.getCompanyName());
+
         Optional<Company> companyOptional = companyRepository.findByCompanyName(joinDTO.getCompanyName());
         if (!companyOptional.isPresent()) {
-            System.out.println("Company not found: " + joinDTO.getCompanyName());
+
             return false;
         }
 
