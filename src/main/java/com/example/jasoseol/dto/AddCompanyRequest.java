@@ -13,4 +13,5 @@ public class AddCompanyRequest {
     private int establishment;
     private String address;
     private long annualIncome;
+//    private String
 }

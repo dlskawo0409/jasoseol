@@ -17,11 +17,16 @@ public class CompanyUser extends User {
     @Column(name = "COMPANY_USER_PHONENUM")
     private String companyUserPhonenum;
 
+    @OneToOne(mappedBy = "companyUser")
+    private Company company;
+
+
     @Builder(builderMethodName = "companyUserBuilder")
     public CompanyUser(String email, String password, String nickname, int marketing, int career, String role, String companyNum, String companyUserName, String companyUserPhonenum) {
         super(email, password, nickname, marketing, career, role);
         this.companyNum = companyNum;
         this.companyUserName = companyUserName;
         this.companyUserPhonenum = companyUserPhonenum;
+        this.company = null;
     }
 }

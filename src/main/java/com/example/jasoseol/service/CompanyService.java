@@ -1,6 +1,7 @@
 package com.example.jasoseol.service;
 
 import com.example.jasoseol.domain.Company;
+import com.example.jasoseol.domain.CompanyUser;
 import com.example.jasoseol.dto.AddCompanyRequest;
 import com.example.jasoseol.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public boolean addCompany(AddCompanyRequest joinDTO){
+    public boolean addCompany(AddCompanyRequest joinDTO, CompanyUser companyUser){
         String companyName = joinDTO.getCompanyName();
         boolean isExist = companyRepository.existsByCompanyName(companyName);
 
@@ -36,4 +37,8 @@ public class CompanyService {
 
         return true;
     }
+
+//    public boolean changeCompanyName(String companyName){
+//        Company company = companyName.
+//    }
 }

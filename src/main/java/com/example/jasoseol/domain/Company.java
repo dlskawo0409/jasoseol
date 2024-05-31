@@ -49,6 +49,9 @@ public class Company {
     @Column(name = "ANNUAL_INCOME",nullable = false)
     private long annualIncome;
 
+    @JoinColumn(name = "USER_ID")
+    private CompanyUser companyUser;
+
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private final List<Annoucement> annoucements = new ArrayList<>();
 }

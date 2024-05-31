@@ -86,6 +86,7 @@ public class SecurityConfig { // 세션설정
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join","/api/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/company/**").hasRole("COMPANY")
                         .anyRequest().authenticated());
         http.
                 addFilterAt(new JWTFilter(jwtUtil), LoginFilter.class);
