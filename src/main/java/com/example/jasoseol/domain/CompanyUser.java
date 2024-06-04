@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
+@Setter
+@Getter
 @Entity
 @DiscriminatorValue("COMPANY_USER")
 public class CompanyUser extends User {

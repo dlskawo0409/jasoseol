@@ -1,4 +1,4 @@
-package com.example.jasoseol.dto;
+package com.example.jasoseol.dto.user;
 
 import com.example.jasoseol.domain.User;
 import lombok.Getter;

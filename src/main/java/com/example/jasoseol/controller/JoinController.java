@@ -1,9 +1,9 @@
 package com.example.jasoseol.controller;
 
 
-import com.example.jasoseol.domain.User;
 import com.example.jasoseol.dto.AddCompanyUserRequest;
-import com.example.jasoseol.dto.AddUserRequest;
+import com.example.jasoseol.dto.user.AddUserRequest;
+import com.example.jasoseol.dto.user.ChangeMarketingRequest;
 import com.example.jasoseol.service.CustomUserDetailsService;
 import com.example.jasoseol.service.JoinService;
 import org.springframework.http.HttpStatus;
@@ -47,10 +47,10 @@ public class JoinController {
 
     }
 
+
     @GetMapping("/api/check-email")
     public  ResponseEntity<?> checkEmail(@RequestParam String email) {
         boolean exists = joinService.existsByEmail(email);
-//        System.out.println(exists);
         MessageResponse response = exists ?
                 new MessageResponse("Email exists") :
                 new MessageResponse("Email does not exist");
@@ -84,8 +84,6 @@ public class JoinController {
         }
 
     }
-
-
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.jasoseol.jwt;
 
 import com.example.jasoseol.domain.User;
-import com.example.jasoseol.dto.AddUserRequest;
 import com.example.jasoseol.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -55,13 +54,13 @@ public class JWTFilter extends OncePerRequestFilter { //OncePerRequestFilter 한
 
         //토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(token);
-        String role = jwtUtil.getRole(token);
-
+        String role = "ROLE_"+jwtUtil.getRole(token);
+        System.out.println("role: "+role);
         //userEntity를 생성하여 값 set
         User user = User.builder()
                         .email(username)
                         .password("temppassword") // 매번 요청할 때 마다 db 검색하기 때문에 이를 방지하기 위해 아무런 값을 넣어줌
-                        .role(role).build(); 
+                        .role(role).build();
 
         //UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(user);

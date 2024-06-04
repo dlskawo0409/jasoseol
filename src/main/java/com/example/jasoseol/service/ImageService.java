@@ -1,13 +1,12 @@
 package com.example.jasoseol.service;
 import java.io.IOException;
 
+import com.example.jasoseol.domain.Announcement;
 import com.example.jasoseol.uploadfiles.storage.StorageProperties;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.jasoseol.domain.Annoucement;
 import com.example.jasoseol.domain.Image;
-import com.example.jasoseol.repository.AnnoucementRepository;
+import com.example.jasoseol.repository.AnnouncementRepository;
 import com.example.jasoseol.repository.ImageRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
@@ -18,20 +17,20 @@ public class ImageService extends  FileSystemStorageService {
 
 
     private final ImageRepository imageRepository;
-    private final AnnoucementRepository annoucementRepository;
+    private final AnnouncementRepository announcementRepository;
 
 
-    public ImageService( StorageProperties properties, ImageRepository imageRepository, AnnoucementRepository annoucementRepository) {
+    public ImageService( StorageProperties properties, ImageRepository imageRepository, AnnouncementRepository announcementRepository) {
         super(properties);
         this.imageRepository = imageRepository;
-        this.annoucementRepository = annoucementRepository;
+        this.announcementRepository = announcementRepository;
 
     }
 
 
 
     @Transactional
-    public boolean uploadImage(MultipartFile file, long annoucementID , int usable, int main) throws IOException {
+    public boolean uploadImage(MultipartFile file, long announcementID , int usable, int main) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
@@ -45,8 +44,8 @@ public class ImageService extends  FileSystemStorageService {
 
 
 
-        Annoucement annoucement = annoucementRepository.findByAnnoucementId(annoucementID);
-        if(annoucement == null){
+        Announcement announcement = announcementRepository.findByAnnouncementId(announcementID);
+        if(announcement == null){
             return false;
         }
         store(file, folder, fileName);
@@ -56,7 +55,7 @@ public class ImageService extends  FileSystemStorageService {
         // Save image information in the database
         Image image = new Image();
         image.setImageUrl(fileDownloadUri);
-        image.setAnnoucement(annoucement);
+        image.setAnnouncement(announcement);
         image.setUsable(usable);
         image.setMain(main);
         imageRepository.save(image);

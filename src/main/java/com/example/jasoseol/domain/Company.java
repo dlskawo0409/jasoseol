@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Builder
@@ -49,9 +50,23 @@ public class Company {
     @Column(name = "ANNUAL_INCOME",nullable = false)
     private long annualIncome;
 
-    @JoinColumn(name = "USER_ID")
+    @OneToOne
+    @JoinColumn(name = "USER_ID" )
     private CompanyUser companyUser;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    private final List<Annoucement> annoucements = new ArrayList<>();
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private final List<Announcement> announcements = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return companyType == company.companyType && employee == company.employee && sales == company.sales && establishment == company.establishment && annualIncome == company.annualIncome && Objects.equals(companyId, company.companyId) && Objects.equals(companyName, company.companyName) && Objects.equals(site, company.site) && Objects.equals(owner, company.owner) && Objects.equals(address, company.address) && Objects.equals(companyUser, company.companyUser) && Objects.equals(announcements, company.announcements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyId, companyName, site, companyType, owner, employee, sales, establishment, address, annualIncome, companyUser, announcements);
+    }
 }

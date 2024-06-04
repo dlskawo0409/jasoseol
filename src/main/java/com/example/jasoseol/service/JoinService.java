@@ -3,9 +3,11 @@ package com.example.jasoseol.service;
 import com.example.jasoseol.domain.CompanyUser;
 import com.example.jasoseol.domain.User;
 import com.example.jasoseol.dto.AddCompanyUserRequest;
-import com.example.jasoseol.dto.AddUserRequest;
+import com.example.jasoseol.dto.user.AddUserRequest;
+import com.example.jasoseol.dto.user.ChangeMarketingRequest;
 import com.example.jasoseol.repository.CompanyUserRepository;
 import com.example.jasoseol.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,6 @@ public class JoinService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-//    public JoinService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder ) {
-//        this.userRepository = userRepository;
-//
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-//    }
 
     public boolean joinProcess(AddUserRequest joinDTO) {
 
@@ -47,38 +44,14 @@ public class JoinService {
                 .password(bCryptPasswordEncoder.encode(password))
                 .nickname("아무개")
                 .marketing(joinDTO.getMarketing())
-                .role("NORMAL")
+                .role("USER")
+
                 .build());
 
         return true;
     }
 
-//    public boolean joinProcess(AddCompanyUserRequest joinDTO){
-//        String email = joinDTO.getEmail();
-//        String password = joinDTO.getPassword();
-//        String nickName = joinDTO.getNickname();
-//        Boolean isExist = userRepository.existsByEmail(email);
-//
-//        if(isExist){
-//            return false;
-//        }
-//
-//
-//        userRepository.save(User.builder()
-//                .email(email)
-//                .password(bCryptPasswordEncoder.encode(password))
-//                .nickname(nickName)
-//                .marketing(joinDTO.getMarketing())
-//                .build());
-//
-//        companyUserRepository.save(CompanyUser.builder()
-//                        .company_num(joinDTO.getCompanyNum())
-//                        .company_user_name(joinDTO.getCompanyUserName())
-//                        .company_user_phonenum(joinDTO.getCompanyUserPhonenum())
-//                .build());
-//
-//        return true;
-//    }
+
 
     public boolean joinProcess(AddCompanyUserRequest joinDTO){
         String email = joinDTO.getEmail();
@@ -97,7 +70,7 @@ public class JoinService {
                 .nickname(nickName)
                 .marketing(joinDTO.getMarketing())
                 .career(0)
-                .role("NORMAL")
+                .role("COMPANY")
                 .companyNum(joinDTO.getCompanyNum())
                 .companyUserName(joinDTO.getCompanyUserName())
                 .companyUserPhonenum(joinDTO.getCompanyUserPhonenum())
@@ -108,7 +81,41 @@ public class JoinService {
         return true;
     }
 
+    public boolean changeCompanyUserNameService(String email, String afterName){
+        CompanyUser companyUser = companyUserRepository.findByEmail(email);
+        if(companyUser == null){
+            return false;
+        }
+
+        companyUser.setCompanyUserName(afterName);
+        companyUserRepository.save(companyUser);
+        return true;
+    }
+
+    public boolean changeCompanyUserPhoneNum(String email, String phoneNum){
+        CompanyUser companyUser = companyUserRepository.findByEmail(email);
+        if(companyUser == null){
+            return false;
+        }
+
+        companyUser.setCompanyUserPhonenum(phoneNum);
+        companyUserRepository.save(companyUser);
+        return true;
+    }
+
+
     public boolean existsByEmail(String email){
         return userRepository.existsByEmail(email);
+    }
+
+    public boolean changeMarketingProcess(int marketing) {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(user == null){
+            return false;
+        }
+
+        user.setMarketing(marketing);
+        userRepository.save(user);
+        return true;
     }
 }

@@ -15,12 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "annoucement")
-public class Annoucement {
+@Table(name = "announcement")
+public class Announcement {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ANNOUNCEMENT_ID")
-    private Long annoucementId;
+    private Long announcementId;
 
     @ManyToOne
     @JoinColumn(name = "COMPANY_ID")
@@ -35,15 +35,24 @@ public class Annoucement {
     @Column(name = "CLICKED", nullable = false)
     private int clicked;
 
-    @Column(name = "BOOKMARK", nullable = false)
-    private int bookmark;
+    @Column(name = "BOOKMARK_COUNT", nullable = false)
+    private int bookmarkCont;
 
     @Column(name = "VISITED", nullable = false)
     private int visited;
 
-    @OneToMany(mappedBy = "annoucement", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "announcement", fetch = FetchType.LAZY)
     private final List<Image> images = new ArrayList<>();
 
+//    @ManyToOne
+//    @JoinColumn(name = "BOOKMARK_ID")
+//    private Bookmark bookmark;
+
+//    @ManyToOne( mappedBy  = "announcements", fetch = FetchType.LAZY)
+//    private final User user;
+
+    @OneToMany(mappedBy = "announcement", fetch = FetchType.LAZY)
+    private final List<AnnouncementDetails> announcementDetails = new ArrayList<>();
 
 
 }

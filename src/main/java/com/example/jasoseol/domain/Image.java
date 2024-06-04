@@ -21,7 +21,7 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "ANNOUNCEMENT_ID")
-    private Annoucement annoucement;
+    private Announcement announcement;
 
     @Column(name = "IMAGE_URL")
     private String imageUrl;

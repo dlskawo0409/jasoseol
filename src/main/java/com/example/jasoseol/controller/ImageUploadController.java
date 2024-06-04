@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/upload")
+@RequestMapping("/image")
 
 public class ImageUploadController {
 
@@ -24,7 +24,7 @@ public class ImageUploadController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/image")
+    @PostMapping("")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
                                          @RequestParam("annoucementID")Long annoucementId,
                                          @RequestParam("usable") int usable,

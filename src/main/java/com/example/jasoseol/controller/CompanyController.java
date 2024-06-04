@@ -4,29 +4,34 @@ package com.example.jasoseol.controller;
 import com.example.jasoseol.domain.CompanyUser;
 import com.example.jasoseol.dto.AddCompanyRequest;
 import com.example.jasoseol.dto.CustomUserDetails;
+import com.example.jasoseol.repository.CompanyUserRepository;
 import com.example.jasoseol.service.CompanyService;
 import com.example.jasoseol.service.CustomUserDetailsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/company")
 public class CompanyController {
     private final CompanyService companyService;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final CompanyUserRepository companyUserRepository;
 
-    public CompanyController(CompanyService companyService, CustomUserDetailsService customUserDetailsService) {
+    public CompanyController(CompanyService companyService, CustomUserDetailsService customUserDetailsService, CompanyUserRepository companyUserRepository) {
         this.companyService = companyService;
-        this.customUserDetailsService = customUserDetailsService;
+        this.companyUserRepository = companyUserRepository;
     }
 
-    @PostMapping("/api/join/company")
-    public ResponseEntity<?> addCompanyProcess(@RequestBody AddCompanyRequest joinDTO, Authentication authentication){
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        UserDetails companyUser = customUserDetailsService.loadUserByUsername(userDetails.getUsername());
+    @PostMapping("")
+    public ResponseEntity<?> addCompanyProcess(@RequestBody AddCompanyRequest joinDTO){
 
-        boolean joinSuccess = companyService.addCompany(joinDTO, (CompanyUser) companyUser);
+//        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+        CompanyUser companyUser = companyUserRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//        UserDetails companyUser = customUserDetailsService.loadUserByUsername(userDetails.getUsername());
+
+        boolean joinSuccess = companyService.addCompany(joinDTO, companyUser);
+
 
         if(joinSuccess){
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
@@ -36,15 +41,8 @@ public class CompanyController {
         }
     }
 
-//    @PutMapping("/api/company/companyName")
-//    public ResponseEntity<?> chageCompanyName(@RequestParam("companyName")String  companyName){
-//        boolean change = companyService.changeCompanyName(companyName);
-//        if(change){
-//            return ResponseEntity.ok(new JoinController.MessageResponse("Change Success"));
-//        }
-//        else{
-//            return ResponseEntity.ok("Change Fail");
-//        }
-//
-//    }
+
+
+
+
 }

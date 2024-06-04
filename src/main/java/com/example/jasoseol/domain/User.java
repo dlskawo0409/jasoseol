@@ -9,12 +9,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // 조인 전략
 @DiscriminatorColumn(name = "DTYPE") // DTYPE 열을 사용하여 구분
@@ -31,20 +33,21 @@ public class User extends BasicEntity implements UserDetails  {
     @Column(name = "PASSWORD",  nullable = false)
     private String password;
 
-
     @Column(name = "NICKNAME")
     private String nickname;
 
     @Column(name = "MARKETING", nullable = false)
     private int marketing;
 
-    @Setter
     @Column(name = "CAREER")
     private int career;
 
-
     @Column(name="ROLE")
     private String role;
+
+//    @OneToOne
+//    @JoinColumn(name = "BOOKMARK_ID")
+//    private Bookmark bookmark;
 
 
     @Builder
@@ -57,13 +60,6 @@ public class User extends BasicEntity implements UserDetails  {
         this.role = role;
 
     }
-//    @Builder
-//    public User(String email, String password, int marketing){
-//        this.email = email;
-//        this.password = password;
-//        this.nickname = "아무개";
-//        this.marketing = marketing;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
