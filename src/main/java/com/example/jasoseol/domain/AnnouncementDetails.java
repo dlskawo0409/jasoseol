@@ -1,8 +1,10 @@
 package com.example.jasoseol.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +12,12 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnnouncementDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DETAILS_ID")
-    private Long details_id;
+    private Long detailsId;
 
     @Column(name = "TYPE", nullable = false)
     private int type;

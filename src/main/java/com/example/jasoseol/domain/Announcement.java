@@ -44,9 +44,9 @@ public class Announcement {
     @OneToMany(mappedBy = "announcement", fetch = FetchType.LAZY)
     private final List<Image> images = new ArrayList<>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "BOOKMARK_ID")
-//    private Bookmark bookmark;
+    @OneToOne
+    @JoinColumn(name = "BOOKMARK_ID")
+    private Bookmark bookmark;
 
 //    @ManyToOne( mappedBy  = "announcements", fetch = FetchType.LAZY)
 //    private final User user;

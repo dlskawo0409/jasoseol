@@ -9,4 +9,5 @@ public class AddAnnouncementDetailsRequest {
     private String bigCategory;
     private String middleCategory;
     private String smallCategory;
+    private Long announcementId;
 }

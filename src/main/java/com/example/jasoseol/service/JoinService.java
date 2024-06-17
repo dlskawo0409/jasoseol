@@ -74,6 +74,7 @@ public class JoinService {
                 .companyNum(joinDTO.getCompanyNum())
                 .companyUserName(joinDTO.getCompanyUserName())
                 .companyUserPhonenum(joinDTO.getCompanyUserPhonenum())
+                .comePath(joinDTO.getComePath())
                 .build();
 
         companyUserRepository.save(companyUser);
@@ -104,8 +105,19 @@ public class JoinService {
     }
 
 
-    public boolean existsByEmail(String email){
-        return userRepository.existsByEmail(email);
+    public int existsByEmail(String email){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            return 0; // 존재 하지 않음
+        }
+        else if(user.getRole().equals("USER")){// 일반 유저
+            return 1;
+        }
+        else if(user.getRole().equals("COMPANY")){ // 기업 유저
+            return 2;
+        }
+
+        return -1; // 실패
     }
 
     public boolean changeMarketingProcess(int marketing) {

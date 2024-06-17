@@ -50,10 +50,9 @@ public class JoinController {
 
     @GetMapping("/api/check-email")
     public  ResponseEntity<?> checkEmail(@RequestParam String email) {
-        boolean exists = joinService.existsByEmail(email);
-        MessageResponse response = exists ?
-                new MessageResponse("Email exists") :
-                new MessageResponse("Email does not exist");
+        int exists = joinService.existsByEmail(email);
+        MessageResponse response = new MessageResponse(Integer.toString(exists));
+
 
         return ResponseEntity.ok(response);
     }

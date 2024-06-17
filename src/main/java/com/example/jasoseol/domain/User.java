@@ -45,9 +45,8 @@ public class User extends BasicEntity implements UserDetails  {
     @Column(name="ROLE")
     private String role;
 
-//    @OneToOne
-//    @JoinColumn(name = "BOOKMARK_ID")
-//    private Bookmark bookmark;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private final List<Bookmark> bookmarks = new ArrayList<>();
 
 
     @Builder

@@ -20,17 +20,19 @@ public class AnnouncementsService {
     private final CompanyUserRepository companyUserRepository;
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementDetailsRepository announcementDetailsRepository;
+    private final CategoryRepository categoryRepository;
     private final QuestionRepository questionRepository;
 
-    public AnnouncementsService(AnnouncementRepository announcementRepository, CompanyRepository companyRepository, CompanyUserRepository companyUserRepository, AnnouncementDetailsRepository announcementDetailsRepository, QuestionRepository questionRepository){
+    public AnnouncementsService(AnnouncementRepository announcementRepository, CompanyRepository companyRepository, CompanyUserRepository companyUserRepository, AnnouncementDetailsRepository announcementDetailsRepository, CategoryRepository categoryRepository, QuestionRepository questionRepository){
         this.announcementRepository = announcementRepository;
         this.companyRepository = companyRepository;
         this.companyUserRepository = companyUserRepository;
         this.announcementDetailsRepository = announcementDetailsRepository;
+        this.categoryRepository = categoryRepository;
         this.questionRepository = questionRepository;
     }
     @Transactional
-    public boolean addAnnouncement(AddAnnoucementRequest joinDTO, String email){
+    public boolean addAnnouncement(String email, AddAnnoucementRequest joinDTO){
 
         Long companyUserByEmail = companyUserRepository.findByEmail(email).getId();
 
@@ -57,11 +59,11 @@ public class AnnouncementsService {
         return true;
     }
     @Transactional
-    public boolean addAnnouncementDetails(String email, AddAnnouncementDetailsRequest dto, Long announcementId){
+    public boolean addAnnouncementDetails(String email, AddAnnouncementDetailsRequest dto){
         CompanyUser companyUser = companyUserRepository.findByEmail(email);
         Company userCompany = companyUser.getCompany();
 
-        Announcement announcement = announcementRepository.findByAnnouncementId(announcementId);
+        Announcement announcement = announcementRepository.findByAnnouncementId(dto.getAnnouncementId());
         Company announcementCompany = announcement.getCompany();
 
         if(companyUser == null || announcement == null || userCompany == null || announcementCompany == null){
@@ -76,10 +78,12 @@ public class AnnouncementsService {
                 .middleCategory(dto.getMiddleCategory())
                 .smailCategory(dto.getSmallCategory())
                 .build();
+        categoryRepository.save(category);
 
         announcementDetailsRepository.save(AnnouncementDetails.builder()
                         .type(dto.getType())
                         .content(dto.getContent())
+                        .announcement(announcement)
                         .writersCount(0)
                         .category(category)
                         .build()
@@ -90,9 +94,9 @@ public class AnnouncementsService {
     }
 
     @Transactional
-    public boolean addQuestion(AddQuestionRequest dto, Long announcementDetailsId){
+    public boolean addQuestion(AddQuestionRequest dto){
 
-        AnnouncementDetails announcementDetails = announcementDetailsRepository.findByAnnouncementDetailsId(announcementDetailsId);
+        AnnouncementDetails announcementDetails = announcementDetailsRepository.findByDetailsId(dto.getAnnouncementDetailsId());
         if(announcementDetails == null){
             return false;
         }

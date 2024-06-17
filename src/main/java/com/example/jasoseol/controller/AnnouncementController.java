@@ -22,7 +22,7 @@ public class AnnouncementController {
     public ResponseEntity<?> addCompanyProcess(@RequestBody AddAnnoucementRequest joinDTO){
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean joinSuccess = announcementsService.addAnnouncement(joinDTO, email);
+        boolean joinSuccess = announcementsService.addAnnouncement(email, joinDTO);
 
         if(joinSuccess){
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
@@ -34,10 +34,9 @@ public class AnnouncementController {
 //    @GetMapping("/api/announcement")
 
     @PostMapping("/detail")
-    public ResponseEntity<?> addDetailProcess(@RequestBody AddAnnouncementDetailsRequest dto, Long announcementId){
-
+    public ResponseEntity<?> addDetailProcess(@RequestBody AddAnnouncementDetailsRequest dto){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean joinSuccess = announcementsService.addAnnouncementDetails(email,dto, announcementId );
+        boolean joinSuccess = announcementsService.addAnnouncementDetails(email,dto);
 
         if(joinSuccess){
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
@@ -48,9 +47,9 @@ public class AnnouncementController {
     }
 
     @PostMapping("/question")
-    public ResponseEntity<?> addQuestionProcess(@RequestBody AddQuestionRequest dto, Long announcementDetailsId){
+    public ResponseEntity<?> addQuestionProcess(@RequestBody AddQuestionRequest dto){
 
-        boolean joinSuccess = announcementsService.addQuestion(dto,announcementDetailsId);
+        boolean joinSuccess = announcementsService.addQuestion(dto);
 
         if(joinSuccess){
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
