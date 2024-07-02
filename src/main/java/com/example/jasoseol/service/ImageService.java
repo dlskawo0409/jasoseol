@@ -9,7 +9,11 @@ import com.example.jasoseol.domain.Image;
 import com.example.jasoseol.repository.AnnouncementRepository;
 import com.example.jasoseol.repository.ImageRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -39,10 +43,8 @@ public class ImageService extends  FileSystemStorageService {
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         String folder = "/image/mainImages/";
         String fileDownloadUri = folder + fileName;
+        System.out.println(fileDownloadUri);
 //        Files.copy(file.getInputStream(), Paths.get(rootLocation.toUri()).resolve(fileName));
-
-
-
 
         Announcement announcement = announcementRepository.findByAnnouncementId(announcementID);
         if(announcement == null){
@@ -50,15 +52,22 @@ public class ImageService extends  FileSystemStorageService {
         }
         store(file, folder, fileName);
 
-
-
         // Save image information in the database
         Image image = new Image();
-        image.setImageUrl(fileDownloadUri);
+        image.setImageUrl(fileName);
         image.setAnnouncement(announcement);
         image.setUsable(usable);
         image.setMain(main);
         imageRepository.save(image);
         return true;
     }
+
+    public List<String> getMainImagesProcess() {
+        return imageRepository.findUsableAndMainImages()
+                .stream()
+                .map(Image::getImageUrl)
+                .collect(Collectors.toList());
+    }
+
+
 }
