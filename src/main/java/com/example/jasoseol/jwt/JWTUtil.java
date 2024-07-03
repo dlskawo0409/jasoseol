@@ -32,19 +32,11 @@ public class JWTUtil {  //0.12.3 버전
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
-    public Boolean isExpired(String token) {
-        try {
-            return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
-        } catch (ExpiredJwtException e) {
-            // ExpiredJwtException 발생 시 로그 출력
-            System.out.println("Token has expired: " + e.getMessage());
-            return true; // 만료된 토큰으로 간주
-        }
+
+    public Boolean isExpired(String token) throws ExpiredJwtException {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
-//    public Boolean isExpired(String token) throws ExpiredJwtException {
-//
-//        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
-//    }
 
 
     public String createJwt(String username, String role, Long expiredMs) {

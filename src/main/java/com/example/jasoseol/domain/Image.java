@@ -31,4 +31,7 @@ public class Image {
 
     @Column(name ="MAIN")
     private int main;
+
+    @Column(name ="REDIRECTION_URL")
+    private String redirectionUrl;
 }

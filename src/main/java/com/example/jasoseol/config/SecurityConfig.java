@@ -61,7 +61,6 @@ public class SecurityConfig { // 세션설정
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L); //시간
-
                         configuration.setExposedHeaders(Collections.singletonList("Authorization")); // authorization header도 혀용
 
                         return configuration;

@@ -5,6 +5,7 @@ import com.example.jasoseol.service.ImageService;
 import com.example.jasoseol.uploadfiles.storage.StorageProperties;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +39,9 @@ public class ImageController {
                                          @RequestParam("announcementID")Long annoucementId,
                                          @RequestParam("usable") int usable,
                                          @RequestParam("main") int main,
-                                         @RequestParam("imageUrl") String imageUrl){
+                                         @RequestParam("redirectionUrl") String redirectionUrl){
         try {
-            boolean result = imageService.uploadImage(file,annoucementId, usable, main, imageUrl);
+            boolean result = imageService.uploadImage(file,annoucementId, usable, main, redirectionUrl);
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,8 +51,8 @@ public class ImageController {
         }
     }
     @GetMapping("/main")
-    public List<String> getMainImage(){
-        return imageService.getMainImagesProcess();
+    public String getMainImage(){
+        return  imageService.getMainImagesProcess();
     }
 
     @GetMapping("/{filename}")

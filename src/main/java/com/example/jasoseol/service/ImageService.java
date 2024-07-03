@@ -3,6 +3,9 @@ import java.io.IOException;
 
 import com.example.jasoseol.domain.Announcement;
 import com.example.jasoseol.uploadfiles.storage.StorageProperties;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.jasoseol.domain.Image;
@@ -34,7 +37,7 @@ public class ImageService extends  FileSystemStorageService {
 
 
     @Transactional
-    public boolean uploadImage(MultipartFile file, long announcementID , int usable, int main, String imageUrl) throws IOException {
+    public boolean uploadImage(MultipartFile file, long announcementID , int usable, int main, String redirectionUrl) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
@@ -58,16 +61,31 @@ public class ImageService extends  FileSystemStorageService {
         image.setAnnouncement(announcement);
         image.setUsable(usable);
         image.setMain(main);
-        image.setImageUrl(imageUrl);
+        image.setRedirectionUrl(redirectionUrl);
         imageRepository.save(image);
         return true;
     }
 
-    public List<String> getMainImagesProcess() {
-        return imageRepository.findUsableAndMainImages()
-                .stream()
-                .map(Image::getImageUrl)
-                .collect(Collectors.toList());
+    public String getMainImagesProcess(){
+        JSONArray jsonArray = new JSONArray();
+        try{
+            List<Image> images = imageRepository.findUsableAndMainImages();
+            for( Image now : images){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("IMAGE_URL", now.getImageUrl());
+                jsonObject.put("REDIRECTION_URL", now.getRedirectionUrl());
+                jsonArray.put(jsonObject);
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray.toString();
+
+//        return imageRepository.findUsableAndMainImages()
+//                .stream()
+//                .map(Image::getImageUrl)
+//                .collect(Collectors.toList());
+
     }
 
 
