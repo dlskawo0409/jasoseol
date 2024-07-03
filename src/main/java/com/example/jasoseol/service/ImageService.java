@@ -34,7 +34,7 @@ public class ImageService extends  FileSystemStorageService {
 
 
     @Transactional
-    public boolean uploadImage(MultipartFile file, long announcementID , int usable, int main) throws IOException {
+    public boolean uploadImage(MultipartFile file, long announcementID , int usable, int main, String imageUrl) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
@@ -58,6 +58,7 @@ public class ImageService extends  FileSystemStorageService {
         image.setAnnouncement(announcement);
         image.setUsable(usable);
         image.setMain(main);
+        image.setImageUrl(imageUrl);
         imageRepository.save(image);
         return true;
     }

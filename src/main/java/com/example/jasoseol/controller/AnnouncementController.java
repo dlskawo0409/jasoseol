@@ -22,6 +22,7 @@ public class AnnouncementController {
     public ResponseEntity<?> addCompanyProcess(@RequestBody AddAnnoucementRequest joinDTO){
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
         boolean joinSuccess = announcementsService.addAnnouncement(email, joinDTO);
 
         if(joinSuccess){

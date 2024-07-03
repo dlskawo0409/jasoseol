@@ -2,6 +2,7 @@ package com.example.jasoseol.jwt;
 
 import com.example.jasoseol.domain.User;
 import com.example.jasoseol.dto.CustomUserDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class JWTFilter extends OncePerRequestFilter { //OncePerRequestFilter 한
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ExpiredJwtException {
 
         //request에서 Authorization 헤더를 찾음
         String authorization= request.getHeader("Authorization");
@@ -46,6 +47,7 @@ public class JWTFilter extends OncePerRequestFilter { //OncePerRequestFilter 한
         if (jwtUtil.isExpired(token)) {
 
             System.out.println("token expired");
+
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)

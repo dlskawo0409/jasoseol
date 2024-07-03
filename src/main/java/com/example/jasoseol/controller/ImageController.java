@@ -35,11 +35,12 @@ public class ImageController {
 
     @PostMapping("")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("annoucementID")Long annoucementId,
+                                         @RequestParam("announcementID")Long annoucementId,
                                          @RequestParam("usable") int usable,
-                                         @RequestParam("main") int main) {
+                                         @RequestParam("main") int main,
+                                         @RequestParam("imageUrl") String imageUrl){
         try {
-            boolean result = imageService.uploadImage(file,annoucementId, usable, main);
+            boolean result = imageService.uploadImage(file,annoucementId, usable, main, imageUrl);
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
         } catch (IOException e) {
             e.printStackTrace();
