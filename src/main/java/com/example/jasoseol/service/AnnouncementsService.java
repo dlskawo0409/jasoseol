@@ -10,6 +10,7 @@ import com.example.jasoseol.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -110,5 +111,10 @@ public class AnnouncementsService {
 
 
         return true;
+    }
+
+    @Transactional
+    public List<Announcement> getSearchTextOnToday(String date , String title){ // 성능 향샹 여지가 있을 듯
+        return announcementRepository.findByDateAndText(date, title);
     }
 }

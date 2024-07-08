@@ -1,6 +1,6 @@
 package com.example.jasoseol.controller;
 
-import com.example.jasoseol.domain.AnnouncementDetails;
+import com.example.jasoseol.domain.Announcement;
 import com.example.jasoseol.dto.AddAnnoucementRequest;
 import com.example.jasoseol.dto.AddAnnouncementDetailsRequest;
 import com.example.jasoseol.dto.AddQuestionRequest;
@@ -8,6 +8,9 @@ import com.example.jasoseol.service.AnnouncementsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/announcement")
 public class AnnouncementController {
@@ -58,6 +61,12 @@ public class AnnouncementController {
         else{
             return ResponseEntity.ok("Join Fail");
         }
+    }
+
+    @GetMapping("/title")
+    public List<Announcement> serchAnnouncementProcess(@RequestParam("date") String date,
+                                                       @RequestParam("title") String title){
+        return announcementsService.getSearchTextOnToday(date, title);
     }
 
 }

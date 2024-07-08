@@ -54,5 +54,8 @@ public class Announcement {
     @OneToMany(mappedBy = "announcement", fetch = FetchType.LAZY)
     private final List<AnnouncementDetails> announcementDetails = new ArrayList<>();
 
+    @Column(name ="ANNOUNCEMENT_TITLE", nullable = false)
+    private String announcementTitle;
+
 
 }
