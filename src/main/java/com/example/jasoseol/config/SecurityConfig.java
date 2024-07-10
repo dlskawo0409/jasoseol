@@ -6,10 +6,12 @@ import com.example.jasoseol.jwt.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,7 +44,10 @@ public class SecurityConfig { // 세션설정
 
         return configuration.getAuthenticationManager();
     }
-
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.debug(true);
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -85,8 +90,11 @@ public class SecurityConfig { // 세션설정
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join","/api/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/company/**", "/company-user/**", "/announcement/**").hasRole("COMPANY")
+                        .requestMatchers("/company/**", "/company-user/**", "/announcement/detail",
+                                "/announcement/question").hasRole("COMPANY")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "COMPANY", "USER")
+                        .requestMatchers("/announcement/text/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated());
         http.
                 addFilterAt(new JWTFilter(jwtUtil), LoginFilter.class);

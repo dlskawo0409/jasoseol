@@ -48,14 +48,13 @@ public class Announcement {
     @JoinColumn(name = "BOOKMARK_ID")
     private Bookmark bookmark;
 
-//    @ManyToOne( mappedBy  = "announcements", fetch = FetchType.LAZY)
-//    private final User user;
 
     @OneToMany(mappedBy = "announcement", fetch = FetchType.LAZY)
     private final List<AnnouncementDetails> announcementDetails = new ArrayList<>();
 
     @Column(name ="ANNOUNCEMENT_TITLE", nullable = false)
     private String announcementTitle;
+
 
 
 }

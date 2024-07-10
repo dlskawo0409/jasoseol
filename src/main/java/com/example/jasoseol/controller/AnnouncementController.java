@@ -1,14 +1,14 @@
 package com.example.jasoseol.controller;
 
 import com.example.jasoseol.domain.Announcement;
-import com.example.jasoseol.dto.AddAnnoucementRequest;
+import com.example.jasoseol.dto.AddAnnouncementRequest;
 import com.example.jasoseol.dto.AddAnnouncementDetailsRequest;
 import com.example.jasoseol.dto.AddQuestionRequest;
+import com.example.jasoseol.dto.CompanyNameAndTitleDTO;
 import com.example.jasoseol.service.AnnouncementsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class AnnouncementController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> addCompanyProcess(@RequestBody AddAnnoucementRequest joinDTO){
+    public ResponseEntity<?> addCompanyProcess(@RequestBody AddAnnouncementRequest joinDTO){
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -35,7 +35,6 @@ public class AnnouncementController {
             return ResponseEntity.ok("Join Fail");
         }
     }
-//    @GetMapping("/api/announcement")
 
     @PostMapping("/detail")
     public ResponseEntity<?> addDetailProcess(@RequestBody AddAnnouncementDetailsRequest dto){
@@ -63,10 +62,19 @@ public class AnnouncementController {
         }
     }
 
-    @GetMapping("/title")
-    public List<Announcement> serchAnnouncementProcess(@RequestParam("date") String date,
-                                                       @RequestParam("title") String title){
-        return announcementsService.getSearchTextOnToday(date, title);
+//    @GetMapping("/title")
+//    public ResponseEntity<JSONArray> searchAnnouncementProcess(@RequestParam("title") String title) throws JSONException {
+//        String decodedString = URLDecoder.decode(title, StandardCharsets.UTF_8);
+//        System.out.println(decodedString);
+//        System.out.println("정보");
+//
+//        JSONArray jsonArray =announcementsService.getSearchTextOnToday(decodedString);
+//
+//        return ResponseEntity.ok(jsonArray);
+//    }
+    @GetMapping("/text")
+    public ResponseEntity<List<CompanyNameAndTitleDTO>> searchAnnouncementProcess(@RequestParam("text") String text) {
+        List<CompanyNameAndTitleDTO> announcements = announcementsService.getSearchTextOnToday(text);
+        return ResponseEntity.ok(announcements);
     }
-
 }

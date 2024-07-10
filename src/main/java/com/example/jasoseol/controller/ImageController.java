@@ -36,12 +36,13 @@ public class ImageController {
 
     @PostMapping("")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("announcementID")Long annoucementId,
+                                         @RequestParam("announcementID")Long announcementId,
                                          @RequestParam("usable") int usable,
                                          @RequestParam("main") int main,
                                          @RequestParam("redirectionUrl") String redirectionUrl){
+        System.out.println(redirectionUrl);
         try {
-            boolean result = imageService.uploadImage(file,annoucementId, usable, main, redirectionUrl);
+            boolean result = imageService.uploadImage(file,announcementId, usable, main, redirectionUrl);
             return ResponseEntity.ok(new JoinController.MessageResponse("Join Success"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,7 +55,7 @@ public class ImageController {
     public String getMainImage(){
         return  imageService.getMainImagesProcess();
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) throws Exception {
         System.out.println(filename);

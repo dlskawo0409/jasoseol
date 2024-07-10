@@ -4,8 +4,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 @Getter
-public class AddAnnoucementRequest {
+public class AddAnnouncementRequest {
     private String companyName;
+    private String announcementTitle;
     private LocalDateTime startDay;
     private LocalDateTime endDay;
 
